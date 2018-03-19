@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from ..apis import generic
 
 urlpatterns = [
-    path('', generic.SnippetList.as_view()),
-    path('<int:pk>/', generic.SnippetDetail.as_view()),
+    path('', generic.SnippetList.as_view(), name='snippet-list'),
+    path('<int:pk>/', generic.SnippetDetail.as_view(), name='snippet-detail'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
