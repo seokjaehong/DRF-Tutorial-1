@@ -1,10 +1,12 @@
 from rest_framework import generics, permissions, renderers
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 
 from snippets.permission import IsOwnerOrReadOnly
+from utils.pagination import LargeResultsSetPagination
 
 __all__ = (
     'SnippetList',
@@ -20,8 +22,12 @@ class SnippetList(generics.ListCreateAPIView):
         permissions.IsAuthenticatedOrReadOnly,
     )
 
+    pagination_class = LargeResultsSetPagination
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
 
 
 class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
