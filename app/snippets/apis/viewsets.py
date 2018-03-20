@@ -1,4 +1,6 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, renderers
+# from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from snippets.permission import IsOwnerOrReadOnly
@@ -14,9 +16,11 @@ class SnippetViewSet(viewsets.ModelViewSet):
         IsOwnerOrReadOnly,
     )
 
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
     def highlight(self, request, *args, **kwargs):
         snippet = self.get_object()
         return Response(snippet.highlighted)
